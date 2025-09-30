@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import folium
+import os
 from streamlit_folium import st_folium
 
 
@@ -13,7 +14,7 @@ st.set_page_config(
 )
 
 # Reaad data
-df = pd.read_parquet('data/score_2025_01_p4_all.parquet')
+df = pd.read_parquet(os.path.join('data', 'score_2025_01_p4_all.parquet'))
 
 # Выбор времени
 # Сохраняем уникальные и отсортированные значения
