@@ -1,0 +1,24 @@
+# Python cache
+__pycache__/
+*.py[cod]
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Parquet or data files
+*.csv
+*.xlsx
+data/
+
+# Streamlit generated folders
+.streamlit/
+
+# Jupyter & Streamlit
+.ipynb_checkpoints/
+*.ipynb
+
+# Secrets
+.env
