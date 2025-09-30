@@ -2,5 +2,3 @@ streamlit
 pandas
 folium
 streamlit_folium
---find-links=packages
-h3==3.7.6

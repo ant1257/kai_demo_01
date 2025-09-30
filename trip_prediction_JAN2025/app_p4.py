@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
-import h3
 
 
 # Streamlit settings
@@ -54,7 +53,7 @@ m = folium.Map(location=map_center, zoom_start=12)
 
 # Добавление гексагонов
 for _, row in df_selected.iterrows():
-    polygon = h3.h3_to_geo_boundary(row['h3_cell'], geo_json=True)
+    polygon = row['boundary']
     hex_boundary = [(lat, lon) for lon, lat in polygon]
 
     # Отображаем только краткий popup на карте
