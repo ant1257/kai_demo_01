@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
-import h3
+import h3.api.basic_int as h3
 
 
 # Streamlit settings
