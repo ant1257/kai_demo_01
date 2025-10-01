@@ -22,31 +22,36 @@ Planned once per month (preferably during the night of the 1st day).
 
 
 Feature description:
-    H3                           - an id of a hexagon/cluster
-    id_timestamp                 - id of the prediction. Conbination od dat and time
-    prediction_date_time_start   - Date from which the prediction is actual
-    prediction_date_time_end     - Date to which the prediction is actual
-    trip_count_predict           - Predicted number of a taxi call in the cluster within prediction datetime period
-    trip_count_predict_accuracy* - Sime kind of prediction accuracy
-    trip_count_predict_round     - Rounded redicted number of a taxi call in the cluster within prediction datetime period
-    trip_count                   - Actual number of a taxi call in the cluster within prediction datetime period
-    trip_count_1_year_back       - Actual number of a taxi call in the cluster on the same datetime period but a year ago
-    prev_1_hour_cnt              - Actual number of a taxi call in the cluster an hour ago
-    prev_2_hour_cnt              - Actual number of a taxi call in the cluster 2 hours ago
-    prev_3_hour_cnt              - Actual number of a taxi call in the cluster 3 hours ago
-    1_weeks_back_moving_avg      - A moving average number of trips (same timewindow a week ago, two weeks ago, three weeks ago, four weeks ago)
-    2_weeks_back_moving_avg      - A moving average number of trips (same timewindow two weeks ago, three weeks ago, four weeks ago, five weeks ago)
-    3_weeks_back_moving_avg      - A moving average number of trips (same timewindow three weeks ago, four weeks ago, five weeks ago, six weeks ago)
-    4_weeks_back_moving_avg      - A moving average number of trips (same timewindow four weeks ago, five weeks ago, six weeks ago, seven weeks ago)
-    h3_cell_1_week_popularity    - A coefficient of the cluster popularity during exactly 7 days [from 0 to 1]
-    h3_cell_1_month_popularity   - A coefficient of the cluster popularity during exactly 1 month [from 0 to 1]
-    is_weekend                   - 1 for weekends, 0 for regular days
+    H3                                 - an id of a hexagon/cluster
+    id_timestamp                       - id of the prediction. Conbination od dat and time
+    prediction_date_time_start         - Date from which the prediction is actual
+    prediction_date_time_end           - Date to which the prediction is actual
+    trip_count_predict                 - Predicted number of a taxi call in the cluster within prediction datetime period
+    trip_count_predict_accuracy*       - Some kind of prediction accuracy
+    trip_count_predict_round           - Rounded redicted number of a taxi call in the cluster within prediction datetime period
+    trip_count_predict_round_accuracy* - Some kind of prediction accuracy for rounded predictions
+    trip_count                         - Actual number of a taxi call in the cluster within prediction datetime period
+    trip_count_1_year_back             - Actual number of a taxi call in the cluster on the same datetime period but a year ago
+    prev_1_hour_cnt                    - Actual number of a taxi call in the cluster an hour ago
+    prev_2_hour_cnt                    - Actual number of a taxi call in the cluster 2 hours ago
+    prev_3_hour_cnt                    - Actual number of a taxi call in the cluster 3 hours ago
+    1_weeks_back_moving_avg            - A moving average number of trips (same timewindow a week ago, two weeks ago, three weeks ago, four weeks ago)
+    2_weeks_back_moving_avg            - A moving average number of trips (same timewindow two weeks ago, three weeks ago, four weeks ago, five weeks ago)
+    3_weeks_back_moving_avg            - A moving average number of trips (same timewindow three weeks ago, four weeks ago, five weeks ago, six weeks ago)
+    4_weeks_back_moving_avg            - A moving average number of trips (same timewindow four weeks ago, five weeks ago, six weeks ago, seven weeks ago)
+    h3_cell_1_week_popularity          - A coefficient of the cluster popularity during exactly 7 days [from 0 to 1]
+    h3_cell_1_month_popularity         - A coefficient of the cluster popularity during exactly 1 month [from 0 to 1]
+    is_weekend                         - 1 for weekends, 0 for regular days
 *How close the prediction was to the actual value - from 0% (complete miss) to 100% (perfect match).
- def proximity_score_soft(yt, yp):
-    # yt - actual trip count
-    # yt - predicted trip count
-    denom = max(abs(yt), abs(yp), 1)
-    return 1 - abs(yt - yp) / denom
+Python code:
+def proximity_score_soft(yt, yp):
+   # yt - actual trip count
+   # yt - predicted trip count
+   denom = max(abs(yt), abs(yp), 1)
+   return 1 - abs(yt - yp) / denom
+   
+   
+   
     
 Data insights:
 trip_count:
