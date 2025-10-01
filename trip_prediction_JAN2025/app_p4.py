@@ -16,25 +16,25 @@ st.set_page_config(
 # Reaad data
 df = pd.read_parquet(os.path.join('trip_prediction_JAN2025', 'data', 'score_2025_05_p5_all.parquet'))
 
-# Выбор времени
-# Сохраняем уникальные и отсортированные значения
+# Select timestamp
+# Save and sort unique values
 all_ids = sorted(df['id_timestamp'].unique())
 
-# Инициализация session_state
+# set session_state
 if 'id_index' not in st.session_state:
     st.session_state.id_index = 0
 
-# Обновляем индекс, если выбрали вручную из selectbox
+# Reset index in case of manual selectbox selection
 manual_id = st.select_slider(
     "Select id_timestamp",
     options=all_ids,
     value=all_ids[st.session_state.id_index]
 )
 
-# Обновляем индекс в session_state при ручном выборе
+# Reset index in session_state in case of manual selection
 st.session_state.id_index = all_ids.index(manual_id)
 
-# Кнопки предыдущий / следующий
+# Next / previous button
 with st.container():
     if st.button("⬅️ Previous id_timestamp"):
         if st.session_state.id_index > 0:
@@ -44,21 +44,21 @@ with st.container():
         if st.session_state.id_index < len(all_ids) - 1:
             st.session_state.id_index += 1
 
-# Обновлённое выбранное значение
+# New selected value
 id_choice = all_ids[st.session_state.id_index]
 df_selected = df[df['id_timestamp'] == id_choice].reset_index(drop=True)
 
-# Центр карты
+# Map center
 map_center = [14.763792, -17.352459]
 m = folium.Map(location=map_center, zoom_start=12)
 
-# Добавление гексагонов
+# Adding polygons/h3/hexagons
 for _, row in df_selected.iterrows():
     polygon = row['boundary']
     hex_boundary = [(lat, lon) for lon, lat in polygon]
 
-    # Отображаем только краткий popup на карте
-    popup_content = f"{row['trip_count']} ({row['trip_count_predict']:.2f})"
+    # show popup on the map
+    popup_content = f"A: {row['trip_count']}\nPr: {row['trip_count_predict_round']} ({row['trip_count_predict']:.2f})"
 
     folium.Polygon(
         locations=hex_boundary,
@@ -69,7 +69,7 @@ for _, row in df_selected.iterrows():
         tooltip=row['h3_cell']
     ).add_to(m)
 
-# Два столбца: карта + информация
+# Two fields: map + information
 col_map, col_info = st.columns([2, 1])
 
 with col_map:
