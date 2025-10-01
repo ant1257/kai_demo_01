@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # Reaad data
-df = pd.read_parquet(os.path.join('trip_prediction_JAN2025', 'data', 'score_2025_05_p5_all.parquet'))
+df = pd.read_parquet(os.path.join('trip_prediction_JAN2025', 'data', 'score_2025_01_p4_all.parquet'))
 
 # Выбор времени
 # Сохраняем уникальные и отсортированные значения
@@ -74,12 +74,6 @@ col_map, col_info = st.columns([2, 1])
 
 with col_map:
     st.write(f"🗺 Showing map for `{id_choice}`")
-    
-    avg_accuracy = df_selected['trip_count_predict_accuracy'].mean()
-    avg_round_accuracy = df_selected['trip_count_predict_round_accuracy'].mean()
-    st.write(f"📊 Average accuracy coeff.: `{avg_accuracy:.2f}`")
-    st.write(f"📊 Average accuracy coeff. (round): `{avg_round_accuracy:.2f}`")
-    
     map_data = st_folium(m, width=1000, height=800)
 
 with col_info:
@@ -92,11 +86,8 @@ with col_info:
         st.table(row[[
             'prediction_date_time_start',
             'prediction_date_time_end',
-            'trip_count',
             'trip_count_predict',
-            'trip_count_predict_accuracy',
-            'trip_count_predict_round',
-            'trip_count_predict_round_accuracy',
+            'trip_count',
             'trip_count_1_year_back',
             'prev_1_hour_cnt',
             'prev_2_hour_cnt',

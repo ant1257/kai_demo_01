@@ -8,11 +8,6 @@ build/
 .DS_Store
 Thumbs.db
 
-# Parquet or data files
-*.csv
-*.xlsx
-data/
-
 # Streamlit generated folders
 .streamlit/
 
