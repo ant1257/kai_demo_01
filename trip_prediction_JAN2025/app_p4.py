@@ -16,6 +16,26 @@ st.set_page_config(
 # Reaad data
 df = pd.read_parquet(os.path.join('trip_prediction_JAN2025', 'data', 'score_2025_05_p5_all.parquet'))
 
+# Header
+st.markdown(
+    "<h1 style='text-align: center;'>📈 Demonstration of predictions for May 2025</h1>",
+    unsafe_allow_html=True
+)
+
+# Overall metrics
+overall_accuracy = df['trip_count_predict_accuracy'].mean()
+overall_round_accuracy = df['trip_count_predict_round_accuracy'].mean()
+
+st.markdown(
+    f"""
+    <h4 style='text-align: center; font-weight: normal;'>
+        Average accuracy: <b>{overall_accuracy:.2f}</b> &nbsp;|&nbsp;
+        Rounded accuracy: <b>{overall_round_accuracy:.2f}</b>
+    </h4>
+    """,
+    unsafe_allow_html=True
+)
+
 # Select timestamp
 # Save and sort unique values
 all_ids = sorted(df['id_timestamp'].unique())
@@ -77,8 +97,8 @@ with col_map:
     
     avg_accuracy = df_selected['trip_count_predict_accuracy'].mean()
     avg_round_accuracy = df_selected['trip_count_predict_round_accuracy'].mean()
-    st.write(f"📊 Average accuracy coeff.: `{avg_accuracy:.2f}`")
-    st.write(f"📊 Average accuracy coeff. (round): `{avg_round_accuracy:.2f}`")
+    st.write(f"📊 Average id_timestamp accuracy coeff.: `{avg_accuracy:.2f}`")
+    st.write(f"📊 Average id_timestamp accuracy coeff. (round): `{avg_round_accuracy:.2f}`")
     
     map_data = st_folium(m, width=1000, height=800)
 
