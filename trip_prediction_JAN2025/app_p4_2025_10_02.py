@@ -13,26 +13,16 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Reaad data
+df = pd.read_parquet(os.path.join('trip_prediction_JAN2025', 'data', 'score_2025_05_p5_all.parquet'))
 
-# --- Month Selector & Dynamic Loader ---
-month_file_map = {
-    "December 2024": "score_2024_12_all.parquet",
-    "January 2025": "score_2025_01_all.parquet",
-    "February 2025": "score_2025_02_all.parquet",
-    "March 2025": "score_2025_03_all.parquet",
-    "April 2025": "score_2025_04_all.parquet",
-    "May 2025": "score_2025_05_p5_all.parquet"
-}
-
-selected_month = st.selectbox("📅 Select prediction month", list(month_file_map.keys()), index=5)
-file_path = os.path.join("trip_prediction_JAN2025", "data", month_file_map[selected_month])
-df = pd.read_parquet(file_path)
-
+# Header
 st.markdown(
-    f"<h1 style='text-align: center;'>📈 Demonstration of predictions for {selected_month}</h1>",
+    "<h1 style='text-align: center;'>📈 Demonstration of predictions for May 2025</h1>",
     unsafe_allow_html=True
 )
 
+# Overall metrics
 overall_accuracy = df['trip_count_predict_accuracy'].mean()
 overall_round_accuracy = df['trip_count_predict_round_accuracy'].mean()
 
