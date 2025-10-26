@@ -1,0 +1,1 @@
+A folder for the data (probaly for train and test data there must be two different folders)

@@ -18,3 +18,9 @@ Thumbs.db
 
 # Secrets
 .env
+
+# Other
+*.json
+*.parquet
+*.png
+*.pkl
