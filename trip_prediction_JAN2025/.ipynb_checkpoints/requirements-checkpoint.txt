@@ -2,4 +2,3 @@ streamlit
 pandas
 folium
 streamlit_folium
-h3==3.7.6
