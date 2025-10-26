@@ -35,8 +35,8 @@ for file_path in parquet_files:
     os.remove(file_path)
 print(f"[OK] Removed {len(parquet_files)} .parquet files from {TEMP_DIR}")
 
-# id_date = str(datetime.today().date())
-id_date = '2025-04-01'
+id_date = str(datetime.today().date())
+# id_date = '2025-03-01'
 print("Train data id date: {}".format(id_date))
 cutoff_start_date = datetime.strptime(id_date, "%Y-%m-%d").replace(tzinfo=timezone.utc).date() - timedelta(days = 1)
 cutoff_end_date = cutoff_start_date - relativedelta(months = 24)
@@ -88,7 +88,8 @@ df_original_all['start_time_part_of_day'] = df_original_all['start_date_full'].a
 df_original_all['h3_cell'] = df_original_all.apply(lambda row: h3.geo_to_h3(row['LatitudeStart'], row['LongitudeStart'], RESOLUTION), axis = 1)
 
 df_original_sel = df_original_all[df_original_all['start_date'] <= cutoff_start_date].sort_values(by = ['SpecifiedStartDate']).reset_index(drop = True)
-print("Number of rows: {}".format(df_original_all.shape[0]))
+del df_original_all
+print("Number of rows: {}".format(df_original_sel.shape[0]))
 
 
 start = datetime.now()
@@ -98,10 +99,10 @@ print("NOTE1: date_list is the list of dates for the last 3 months.")
 print("NOTE2: this may take an hour or so.")
 for check_date_str in date_list:
     for check_time_str in check_time_list:
-        collect_data(df_original_all, check_date_str, check_time_str, TEMP_DIR, data_type = 'train')
+        collect_data(df_original_sel, check_date_str, check_time_str, TEMP_DIR, data_type = 'train')
 end = datetime.now()
 print(f"[OK] Data collected in {end - start}.")
-del df_original_all
+del df_original_sel
 
 
 ## Train model and save
@@ -118,7 +119,7 @@ df_all = pd.DataFrame()
 print("Reading files...")
 print("NOTE: it may take some time")
 for file in files:
-    file_path = os.path.join(DATA_DIR, os.path.join(TEMP_DIR, file))
+    file_path = os.path.join(TEMP_DIR, file)
     if os.path.exists(file_path):
         df_temp = pd.read_parquet(os.path.join(TEMP_DIR, file))
         df_all = pd.concat([df_all, df_temp], ignore_index = True)
@@ -231,12 +232,13 @@ feature_importance_df = pd.DataFrame({
     'feature': features,
     'importance': importance
 }).sort_values(by='importance', ascending=False)
+feature_importance_df['importance_pct'] = 100 * feature_importance_df['importance'] / feature_importance_df['importance'].sum()
 
 print("Saving Feature Importance figure to {}".format(model_pkl_path))
 plt.figure(figsize=(12, 6))
-sns.barplot(data=feature_importance_df.head(20), x='importance', y='feature', palette='viridis')
+sns.barplot(data=feature_importance_df.head(20), x='importance_pct', y='feature', palette='viridis')
 plt.title("Top 20 Feature Importances (LGBMRegressor)")
-plt.xlabel("Importance")
+plt.xlabel("Importance (%)")
 plt.ylabel("Feature")
 plt.tight_layout()
 plt.savefig(os.path.join(model_output_folder, "lgb_feature_importance_{}.png".format(id_date.replace("-", "_"))), dpi=300, transparent=False, facecolor='white')
