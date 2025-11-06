@@ -4,7 +4,7 @@ This project provides a modular and production-ready pipeline for hour-ahead tax
 
 
 ** Project Structure **
-trip_forecasting_1h/
+trip_forecasting_1h:
 ├── code/ # Main scripts to be executed (e.g., 01_train_model.py)
 ├── data/ # Raw ride data in JSON format (1 file = 1 month of data)
 ├── func/ # Helper functions used in the scripts (e.g., feature engineering)
