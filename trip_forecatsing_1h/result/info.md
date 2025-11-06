@@ -1,1 +1,1 @@
-A folder for predictions
+Placeholder directory for storing model predictions. This folder is currently empty but will be populated by the prediction script.

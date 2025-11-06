@@ -23,7 +23,13 @@ from dateutil.relativedelta import relativedelta
 from func.part_of_day import part_of_day
 
 
-def collect_data(df_original_sel, check_date_str, check_time_str, output_folder, data_type = 'train'):
+def collect_data(
+    df_original_sel,    # filtered historical dataframe
+    check_date_str,     # e.g., "2025-05-01"
+    check_time_str,     # e.g., "14:00:00"
+    output_folder,      # where to save the result (aka temp train data)
+    data_type = 'train' # 'train' or 'score'
+):
     print("*------- Start ----------*")
     check_date_time_str = check_date_str + ' ' + check_time_str
     date_time_format = "%Y-%m-%d %H:%M:%S"

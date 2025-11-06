@@ -1,1 +1,1 @@
-A folder for the models and their artifacts
+Contains the latest trained model in `.pkl` format (for inference). Also stores previous training runs in dedicated subfolders, including the model and related artifacts (metrics, figures, etc.).
