@@ -15,7 +15,7 @@ trip_forecasting_1h:
 
 
 ** Notes **
-**code/**:  
+- **code/**:  
   Contains core executable scripts. For example, `01_train_model.py` trains the forecasting model using aggregated ride data.
 
 - **data/**:  
