@@ -20,25 +20,26 @@ from func.collect_data import collect_data
 
 ## Settings
 # for test
-full_date_time = datetime(2025, 5, 1, 10, 12, 0, tzinfo = timezone.utc)
-# full_date_time = datetime.today()
+# full_date_time = datetime(2025, 5, 1, 10, 12, 0, tzinfo = timezone.utc)
+full_date_time = datetime.today()
 id_date = str(full_date_time.date())
 id_time = full_date_time.strftime("%H:%M:%S")
+# 10-minute flooring
 floored_minute = (full_date_time.time().minute // 10) * 10
 id_time_floored = full_date_time.time().replace(minute=floored_minute, second=0, microsecond=0)
+# Data selection period
 cutoff_start_date = datetime.strptime(id_date, "%Y-%m-%d").replace(tzinfo=timezone.utc).date()
 cutoff_end_date = cutoff_start_date - relativedelta(months = 24)
 print("Score data id date and time: {} {}".format(id_date, id_time_floored))
-
 data_selection_start_date = datetime.strptime(str(cutoff_start_date), "%Y-%m-%d").replace(tzinfo=timezone.utc).date()
 data_selection_end_date = datetime.strptime(str(cutoff_end_date), "%Y-%m-%d").replace(tzinfo=timezone.utc).date()
 
+# Create date list for data selection
 start_date = cutoff_start_date - relativedelta(months = 3)
 date_list = [
     (start_date + timedelta(days=i)).isoformat()
     for i in range((cutoff_start_date - start_date).days + 1)
 ]
-
 start_date = data_selection_end_date
 end_date = data_selection_start_date
 months = []
@@ -70,9 +71,7 @@ df_original_all['start_date'] = df_original_all['start_date_full'].dt.date
 df_original_all['start_time'] = df_original_all['start_date_full'].dt.time
 df_original_all['start_time_part_of_day'] = df_original_all['start_date_full'].apply(part_of_day)
 df_original_all['h3_cell'] = df_original_all.apply(lambda row: h3.geo_to_h3(row['LatitudeStart'], row['LongitudeStart'], RESOLUTION), axis = 1)
-
 df_original_sel = df_original_all[df_original_all['start_date'] <= cutoff_start_date].sort_values(by = ['SpecifiedStartDate']).reset_index(drop = True)
-print(df_original_all.shape)
 
 
 
@@ -102,6 +101,7 @@ df_data_02['prev_3_hour_cnt'] = df_data_02['prev_3_hour_cnt'].astype(int)
 df_data_02['part_of_day'] = df_data_02['part_of_day'].astype(int)
 df_data_02['trip_count_1_year_back'] = df_data_02['trip_count_1_year_back'].astype(int)
 
+# One-hot encoding
 part_of_day_dummies = pd.get_dummies(df_data_02['part_of_day']).rename(columns=part_of_day_labels)
 df_data_02 = pd.concat([df_data_02, part_of_day_dummies], axis=1)
 for value in part_of_day_labels.values():
@@ -142,5 +142,6 @@ df_result['trip_count_predict_raw'] = y_pred
 df_result['trip_count_predict'] = df_result['trip_count_predict_raw'].round(0).astype(int)
 df_result = df_result[['id_timestamp', 'h3_cell', 'trip_count_predict_raw', 'trip_count_predict']]
 
+# Save the result
 print("Saving predictions {} (json file)".format(RESULT_DIR))
 df_result.to_json(os.path.join(RESULT_DIR, "prediction_{}.json".format(text_datetime_id)), orient="records", lines=True)
