@@ -8,6 +8,7 @@ RESOLUTION = 7
 DATA_DIR = os.path.join('..', 'data')
 TEMP_DIR = os.path.join('..', 'temp')
 MODEL_DIR = os.path.join('..', 'model')
+RESULT_DIR = os.path.join('..', 'result')
 
 # For feature engineering
 part_of_day_labels = {
